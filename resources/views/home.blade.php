@@ -5,18 +5,18 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-8">
+        <div class="max-w-lg mx-auto sm:px-6 lg:px-8 space-y-4">
 
             @foreach ($images as $image)
                 <div class="bg-white shadow sm:rounded-lg overflow-hidden">
 
-                    <!-- Capçalera de la imatge amb l'usuari -->
-                    <div class="flex items-center px-4 py-3">
-                        <div class="font-semibold text-gray-800">
+                    <!-- Capçalera amb l'usuari -->
+                    <div class="flex items-center px-3 py-2">
+                        <div class="font-semibold text-sm text-gray-800">
                             {{ $image->user->name }}
                         </div>
-                        <div class="ml-auto text-sm text-gray-500">
+                        <div class="ml-auto text-xs text-gray-400">
                             {{ $image->created_at->diffForHumans() }}
                         </div>
                     </div>
@@ -25,16 +25,8 @@
                     <img
                         src="{{ asset('storage/' . $image->image_path) }}"
                         alt="{{ $image->description }}"
-                        class="w-full object-cover"
+                        class="w-full object-cover max-h-64"
                     />
-
-                    <!-- Descripció -->
-                    @if ($image->description)
-                        <div class="px-4 py-3 text-gray-700">
-                            <span class="font-semibold">{{ $image->user->name }}</span>
-                            {{ $image->description }}
-                        </div>
-                    @endif
 
                     <!-- Peu amb likes i comentaris -->
                     <div class="px-4 py-3 border-t border-gray-100 flex items-center gap-4 text-sm text-gray-600">
@@ -48,6 +40,14 @@
                             {{ $image->comments->count() }}
                         </span>
                     </div>
+
+                    <!-- Descripció -->
+                    @if ($image->description)
+                        <div class="px-3 pb-2 text-xs text-gray-700">
+                            <span class="font-semibold">{{ $image->user->name }}</span>
+                            {{ $image->description }}
+                        </div>
+                    @endif
 
                 </div>
             @endforeach
