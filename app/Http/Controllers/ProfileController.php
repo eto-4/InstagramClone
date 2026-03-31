@@ -32,11 +32,12 @@ class ProfileController extends Controller
         if ($request->hasFile('avatar')) {
             // Eliminem l'avatar anterior si existeix
             if ($request->user()->avatar) {
+                // '\' per accedir a la classe des de el namespace global.
                 \Storage::disk('public')->delete($request->user()->avatar);
             }
             $request->user()->avatar = $request->file('avatar')->store('avatars', 'public');
         }
-        
+
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
