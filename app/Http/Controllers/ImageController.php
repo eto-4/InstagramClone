@@ -102,4 +102,48 @@ class ImageController extends Controller
 
         return redirect()->route('home')->with('success', 'Imatge eliminada correctament!');
     }
+
+    /**
+     * Retorna les dades d'una imatge en format JSON per al modal.
+     */
+    public function data(Image $image): \Illuminate\Http\JsonResponse
+    {
+        $image->load('user', 'likes.user', 'comments.user');
+    
+        return response()->json([
+            'id'          => $image->id,
+            'image_url'   => asset('storage/' . $image->image_path),
+            'description' => $image->description,
+            'created_at'  => $image->created_at->diffForHumans(),
+            'like_count'  => $image->likes->count(),
+            'liked'       => $image->likes->contains('user_id', auth()->id()),
+            'comment_count' => $image->comments->count(),
+            'user' => [
+                'id'     => $image->user->id,
+                'name'   => $image->user->name,
+                'avatar' => $image->user->avatar
+                                ? asset('storage/' . $image->user->avatar)
+                                : null,
+                'initials' => strtoupper(substr($image->user->name, 0, 1)),
+                'url'    => route('users.show', $image->user),
+            ],
+            'comments' => $image->comments->sortBy('created_at')->map(fn($comment) => [
+                'id'         => $comment->id,
+                'body'       => $comment->body,
+                'created_at' => $comment->created_at->diffForHumans(),
+                'is_owner'   => $comment->user_id === auth()->id(),
+                'edit_url'   => route('comments.edit', $comment),
+                'delete_url' => route('comments.destroy', $comment),
+                'user' => [
+                    'id'       => $comment->user->id,
+                    'name'     => $comment->user->name,
+                    'avatar'   => $comment->user->avatar
+                                      ? asset('storage/' . $comment->user->avatar)
+                                      : null,
+                    'initials' => strtoupper(substr($comment->user->name, 0, 1)),
+                    'url'      => route('users.show', $comment->user),
+                ],
+            ])->values(),
+        ]);
+    }
 }
