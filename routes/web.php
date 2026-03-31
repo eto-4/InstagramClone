@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -31,12 +32,15 @@ Route::middleware('auth')->group(function () {
     // LikeController Routes
     Route::post('/images/{image}/like', [LikeController::class, 'toggle'])->name('likes.toggle');
 
-    // Rutes CRUD de Posts
+    // Posts CRUD Routes
     Route::get('/posts/create', [ImageController::class, 'create'])->name('posts.create');
     Route::post('/posts', [ImageController::class, 'store'])->name('posts.store');
     Route::get('/posts/{image}/edit', [ImageController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{image}', [ImageController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{image}', [ImageController::class, 'destroy'])->name('posts.destroy');
+
+    // ProfileController Routes
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
 
 require __DIR__.'/auth.php';
