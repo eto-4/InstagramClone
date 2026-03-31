@@ -33,7 +33,12 @@ class ProfileUpdateRequest extends FormRequest
                 'min:9', 
                 'max:15'
             ],
-
+            'avatar' => [
+                'nullable', 
+                'image', 
+                'mimes:jpeg,png,jpg,gif', 
+                'max:2048'
+            ],
         ];
     }
 }

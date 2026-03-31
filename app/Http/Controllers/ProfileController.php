@@ -28,6 +28,15 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+            // Si s'ha pujat un nou avatar el substituïm
+        if ($request->hasFile('avatar')) {
+            // Eliminem l'avatar anterior si existeix
+            if ($request->user()->avatar) {
+                \Storage::disk('public')->delete($request->user()->avatar);
+            }
+            $request->user()->avatar = $request->file('avatar')->store('avatars', 'public');
+        }
+        
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
