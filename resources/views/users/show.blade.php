@@ -31,13 +31,13 @@
             @if ($images->count())
                 <div class="grid grid-cols-3 gap-1">
                     @foreach ($images as $image)
-                        <a href="{{ route('images.show', $image) }}" class="block aspect-square overflow-hidden">
+                        <button class="open-modal block aspect-square overflow-hidden" data-id="{{ $image->id }}">
                             <img
                                 src="{{ asset('storage/' . $image->image_path) }}"
                                 alt="{{ $image->description }}"
                                 class="w-full h-full object-cover hover:opacity-80 transition"
                             />
-                        </a>
+                        </button>
                     @endforeach
                 </div>
 
@@ -53,4 +53,7 @@
 
         </div>
     </div>
+
+    <!-- Importació de Modal -->
+    @include('partials.post-modal')
 </x-app-layout>

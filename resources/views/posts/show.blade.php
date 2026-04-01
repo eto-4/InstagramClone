@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="flex items-center justify-center px-4" style="min-height: calc(100vh - 200px);">
+        <div class="max-w-4xl w-full">
             <div class="bg-white shadow sm:rounded-lg overflow-hidden flex flex-col md:flex-row" style="min-height: 500px;">
 
                 <!-- Imatge esquerra -->

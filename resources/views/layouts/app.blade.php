@@ -29,8 +29,17 @@
                 </header>
             @endisset
 
+            
             <!-- Page Content -->
             <main>
+                <!-- Missatges d'èxit -->
+                @if (session('success'))
+                    <div class="max-w-lg mx-auto mt-4 px-4">
+                        <div class="bg-green-100 border border-green-300 text-green-700 text-sm rounded-lg px-4 py-3">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                @endif
                 {{ $slot }}
             </main>
         </div>

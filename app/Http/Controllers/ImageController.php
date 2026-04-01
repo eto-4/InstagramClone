@@ -17,7 +17,7 @@ class ImageController extends Controller
         // Carreguem les relacions necessàries
         $image->load('user', 'likes.user', 'comments.user');
 
-        return view('images.show', compact('image'));
+        return view('posts.show', compact('image'));
     }
     
     /**
