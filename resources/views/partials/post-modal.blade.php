@@ -86,6 +86,36 @@
             @endauth
         </div>
     </div>
+
+    <!-- Mini modal d'edició de comentari -->
+    <div id="edit-comment-modal" class="fixed inset-0 z-60 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
+
+            <!-- Títol -->
+            <h3 class="text-sm font-semibold text-gray-800 mb-4">{{ __('Editar comentari') }}</h3>
+
+            <!-- Blockquote amb el text original -->
+            <blockquote class="border-l-4 border-gray-300 pl-3 mb-4 text-sm text-gray-500 italic" id="edit-comment-original"></blockquote>
+
+            <!-- Input nou text -->
+            <input
+                type="text"
+                id="edit-comment-input"
+                class="w-full text-sm border-0 border-b border-gray-300 focus:ring-0 focus:border-indigo-500 bg-transparent px-0 mb-6"
+                required
+            />
+
+            <!-- Botons -->
+            <div class="flex justify-between mt-4">
+                <button id="edit-comment-cancel" class="text-sm text-gray-500 hover:text-gray-700">
+                    {{ __('Cancel·lar') }}
+                </button>
+                <button id="edit-comment-submit" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+                    {{ __('Corregir') }}
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -187,7 +217,7 @@
 
                 const actionsHtml = comment.is_owner
                     ? `<div class="flex gap-2 mt-1">
-                           <a href="${comment.edit_url}" class="text-xs text-gray-400 hover:text-gray-600">Editar</a>
+                           <button onclick="openEditComment(${comment.id}, '${comment.update_url}', '${comment.body.replace(/'/g, "\\'")}')" class="text-xs text-gray-400 hover:text-gray-600">Editar</button>
                            <form method="POST" action="${comment.delete_url}" class="inline delete-comment-form">
                                <input type="hidden" name="_token" value="${document.querySelector('meta[name=csrf-token]')?.content ?? ''}">
                                <input type="hidden" name="_method" value="DELETE">
@@ -359,6 +389,59 @@
         })
         .then(res => {
             if (res.ok) {
+                fetch(`/images/${currentImageId}/data`)
+                    .then(r => r.json())
+                    .then(data => {
+                        renderComments(data.comments);
+                        document.getElementById('modal-comment-count').textContent = `${data.comment_count} comentaris`;
+                    });
+            }
+        });
+    });
+
+    // ─── Mini modal d'edició de comentari ────────────────────────────
+    let currentCommentId = null;
+    let currentCommentUrl = null;
+
+    function openEditComment(commentId, commentUrl, commentBody) {
+        currentCommentId = commentId;
+        currentCommentUrl = commentUrl;
+
+        document.getElementById('edit-comment-original').textContent = commentBody;
+        document.getElementById('edit-comment-input').value = commentBody;
+
+        const modal = document.getElementById('edit-comment-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.getElementById('edit-comment-input').focus();
+    }
+
+    function closeEditComment() {
+        const modal = document.getElementById('edit-comment-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        currentCommentId = null;
+        currentCommentUrl = null;
+    }
+
+    document.getElementById('edit-comment-cancel').addEventListener('click', closeEditComment);
+
+    document.getElementById('edit-comment-submit').addEventListener('click', () => {
+        const body = document.getElementById('edit-comment-input').value.trim();
+        if (!body) return;
+
+        fetch(currentCommentUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content ?? '',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ _method: 'PATCH', body })
+        })
+        .then(res => {
+            if (res.ok) {
+                closeEditComment();
+                // Recarreguem els comentaris del modal
                 fetch(`/images/${currentImageId}/data`)
                     .then(r => r.json())
                     .then(data => {

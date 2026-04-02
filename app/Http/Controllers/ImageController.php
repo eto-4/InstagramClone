@@ -131,6 +131,7 @@ class ImageController extends Controller
                 'id'         => $comment->id,
                 'body'       => $comment->body,
                 'created_at' => $comment->created_at->diffForHumans(),
+                'update_url' => route('comments.update', $comment),
                 'is_owner'   => $comment->user_id === auth()->id(),
                 'edit_url'   => route('comments.edit', $comment),
                 'delete_url' => route('comments.destroy', $comment),
