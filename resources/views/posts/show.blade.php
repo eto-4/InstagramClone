@@ -37,13 +37,6 @@
                             <span class="font-semibold text-sm text-gray-800">{{ $image->user->name }}</span>
                         </a>
                         <span class="ml-auto text-xs text-gray-400">{{ $image->created_at->diffForHumans() }}</span>
-                        @auth
-                            @if ($image->user_id === auth()->id())
-                                <a href="{{ route('posts.edit', $image) }}" class="text-xs text-gray-400 hover:text-gray-600">
-                                    {{ __('Editar') }}
-                                </a>
-                            @endif
-                        @endauth
                     </div>
 
                     <!-- Descripció -->

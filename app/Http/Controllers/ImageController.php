@@ -127,6 +127,7 @@ class ImageController extends Controller
                 'initials' => strtoupper(substr($image->user->name, 0, 1)),
                 'url'    => route('users.show', $image->user),
             ],
+            'is_owner' => auth()->check() && $image->user_id === auth()->id(),
             'comments' => $image->comments->sortBy('created_at')->map(fn($comment) => [
                 'id'         => $comment->id,
                 'body'       => $comment->body,

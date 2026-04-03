@@ -18,9 +18,7 @@
                 <!-- Informació -->
                 <div>
                     <h1 class="text-xl font-bold text-gray-800">{{ $user->name }}</h1>
-                    @if ($user->phone_number)
-                        <p class="text-sm text-gray-500 mt-1">{{ $user->phone_number }}</p>
-                    @endif
+                    <p class="text-sm text-gray-400 mt-1"><span>@</span>{{ str_replace(' ', '_', $user->name) }}</p>
                     <p class="text-sm text-gray-400 mt-1">
                         {{ $images->total() }} {{ __('publicacions') }}
                     </p>

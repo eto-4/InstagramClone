@@ -19,14 +19,26 @@
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
                     </svg>
                 </div>
+                <!-- Dades usuari -->
                 <div id="modal-user-content" class="hidden flex items-center gap-3 w-full">
+                    <!-- Primer link (foto de perfil) -->
                     <a id="modal-user-link" href="#">
                         <div id="modal-avatar-container"></div>
                     </a>
                     <div>
+                        <!-- Segon link Nom d'usuari -->
                         <a id="modal-user-link2" href="#" class="font-semibold text-sm text-gray-800 hover:underline"></a>
-                        <div id="modal-date" class="text-xs text-gray-400"></div>
+                        <div class="flex flex-row gap-3">
+                            <!-- Data de publicació -->
+                            <div id="modal-date" class="text-xs text-gray-400"></div>
+                            <!-- Botó edit de post -->
+                            <a id="modal-edit-btn" href="#" class="hidden text-xs text-gray-400 hover:text-gray-600">
+                                {{ __('Editar') }}
+                            </a>
+                        </div>
                     </div>
+
+                    <!-- Creueta -->
                     <button id="modal-close" class="ml-auto text-gray-400 hover:text-gray-600 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -174,6 +186,17 @@
         document.getElementById('modal-user-link2').href = data.user.url;
         document.getElementById('modal-user-link2').textContent = data.user.name;
         document.getElementById('modal-date').textContent = data.created_at;
+
+        // Botó d'editar si ets el propietari
+        const editBtn = document.getElementById('modal-edit-btn');
+        if (editBtn) {
+            if (data.is_owner) {
+                editBtn.href = `/posts/${data.id}/edit`;
+                editBtn.classList.remove('hidden');
+            } else {
+                editBtn.classList.add('hidden');
+            }
+        }
 
         // Amaguem spinner usuari
         document.getElementById('modal-user-spinner').classList.add('hidden');
