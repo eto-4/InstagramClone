@@ -361,12 +361,10 @@
                     .then(data => {
                         renderComments(data.comments);
                         document.getElementById('modal-comment-count').textContent = `${data.comment_count} comentaris`;
+                        
                         // Actualitzem també el comptador de la targeta
-                        const cardBtn = document.querySelector(`.open-modal[data-id="${currentImageId.toString()}"]`);
-                        if (cardBtn) {
-                            const countSpan = cardBtn.nextElementSibling?.querySelector('span');
-                            if (countSpan) countSpan.textContent = data.comment_count;
-                        }
+                        const cardCommentCount = document.querySelector(`.comment-count[data-id="${currentImageId.toString()}"]`);
+                        if (cardCommentCount) cardCommentCount.textContent = data.comment_count;
                     });
             }
         });
@@ -394,6 +392,10 @@
                     .then(data => {
                         renderComments(data.comments);
                         document.getElementById('modal-comment-count').textContent = `${data.comment_count} comentaris`;
+
+                        // Actualitzem també el comptador de la targeta
+                        const cardCommentCount = document.querySelector(`.comment-count[data-id="${currentImageId.toString()}"]`);
+                        if (cardCommentCount) cardCommentCount.textContent = data.comment_count;
                     });
             }
         });

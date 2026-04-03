@@ -43,5 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/posts/{image}', [ImageController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{image}', [ImageController::class, 'destroy'])->name('posts.destroy');    
 });
-    
+
+Route::fallback(function () {
+    return redirect()->route('home');
+});
+
 require __DIR__.'/auth.php';
