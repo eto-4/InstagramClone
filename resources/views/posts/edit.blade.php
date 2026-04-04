@@ -9,7 +9,7 @@
         <div class="max-w-lg mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow sm:rounded-lg overflow-hidden p-6">
 
-                <form method="POST" action="{{ route('posts.update', $image) }}" enctype="multipart/form-data">
+                <form id="edit-form" method="POST" action="{{ route('posts.update', $image) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
 
@@ -49,34 +49,31 @@
                         >{{ old('description', $image->description) }}</textarea>
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>
-
-                    <!-- Botons -->
-                    <div class="mt-6 flex justify-between">
-
-                        <!-- Eliminar publicació -->
-                        <form method="POST" action="{{ route('posts.destroy', $image) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button
-                                type="submit"
-                                class="text-sm text-red-600 hover:text-red-900 underline"
-                                onclick="return confirm('{{ __('Estàs segur que vols eliminar aquesta publicació?') }}')"
-                            >
-                                {{ __('Eliminar publicació') }}
-                            </button>
-                        </form>
-
-                        <div class="flex items-center gap-4">
-                            <a href="{{ route('images.show', $image) }}" class="text-sm text-gray-600 hover:text-gray-900 underline">
-                                {{ __('Cancel·lar') }}
-                            </a>
-                            <x-primary-button>
-                                {{ __('Guardar canvis') }}
-                            </x-primary-button>
-                        </div>
-
-                    </div>
                 </form>
+
+                <div class="mt-6 flex justify-between">
+                    <!-- Eliminar publicació - form separat -->
+                    <form method="POST" action="{{ route('posts.destroy', $image) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button
+                            type="submit"
+                            class="text-sm text-red-600 hover:text-red-900 underline"
+                            onclick="return confirm('{{ __('Estàs segur que vols eliminar aquesta publicació?') }}')"
+                        >
+                            {{ __('Eliminar publicació') }}
+                        </button>
+                    </form>
+
+                    <div class="flex items-center gap-4">
+                        <a href="{{ route('home') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">
+                            {{ __('Cancel·lar') }}
+                        </a>
+                        <x-primary-button form="edit-form">
+                            {{ __('Guardar canvis') }}
+                        </x-primary-button>
+                    </div>
+                </div>
 
             </div>
         </div>

@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="flex items-center justify-center px-4" style="min-height: calc(100vh - 200px);">
+    <div class="flex items-center justify-center px-4" style="min-height: calc(100vh - 230px);">
         <div class="max-w-4xl w-full">
             <div class="bg-white shadow sm:rounded-lg overflow-hidden flex flex-col md:flex-row" style="min-height: 500px;">
 
