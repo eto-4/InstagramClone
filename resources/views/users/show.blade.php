@@ -10,10 +10,18 @@
 
             <!-- Capçalera del perfil -->
             <div class="bg-white shadow sm:rounded-lg p-6 flex items-center gap-6 mb-6">
-                <!-- Avatar / Inicials -->
-                <div class="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
-                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                </div>
+                <!-- Avatar o inicials -->
+                @if (auth()->user()->avatar)
+                    <img
+                        src="{{ asset('storage/' . auth()->user()->avatar) }}"
+                        alt="{{ auth()->user()->name }}"
+                        class="w-20 h-20 rounded-full object-cover"
+                    />
+                @else
+                    <div class="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-bold">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                @endif
 
                 <!-- Informació -->
                 <div>

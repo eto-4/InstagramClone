@@ -205,7 +205,7 @@
         // Descripció
         if (data.description) {
             const desc = document.getElementById('modal-description');
-            desc.innerHTML = `<span class="font-semibold">${data.user.name}</span> ${data.description}`;
+            desc.innerHTML = `<span class="font-semibold">${data.user.name}</span> - ${data.description}`;
             desc.classList.remove('hidden');
         }
 
